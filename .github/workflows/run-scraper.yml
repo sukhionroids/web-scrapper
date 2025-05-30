@@ -37,3 +37,5 @@ jobs:
         path: |
           page_content.html
           page_screenshot.png
+        retention-days: 5
+        if-no-files-found: warn
