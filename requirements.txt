@@ -1,0 +1,6 @@
+# requirements.txt for Azure Functions
+requests
+lxml
+beautifulsoup4
+playwright
+nest_asyncio  # For handling asyncio in Azure Functions
