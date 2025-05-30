@@ -8,34 +8,28 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    timeout-minutes: 10  # Add a timeout for the entire job
     
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
       
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
         
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
         
-    - name: Install Playwright browsers
-      run: |
-        python -m playwright install chromium
+      - name: Install Playwright browsers
+        run: |
+          python -m playwright install chromium
         
-    - name: Run scraper
-      run: python edge_playwright_github.py
+      - name: Run scraper
+        run: python edge_playwright_github.py
+        timeout-minutes: 5  # Add a timeout for this specific step
       
-    - name: Upload results
-      uses: actions/upload-artifact@v3
-      with:
-        name: scraping-results-${{ github.run_id }}
-        path: |
-          page_content.html
-          page_screenshot.png
-        retention-days: 5
-        if-no-files-found: warn
+
