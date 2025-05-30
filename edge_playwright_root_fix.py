@@ -114,13 +114,9 @@ async def scrape_website():
             try:
                 retry_count += 1
                 print(f"Attempt {retry_count} of {max_retries}...")
-                
-                # ========== ROOT CAUSE FIX #4: Navigation Configuration ==========
+                  # ========== ROOT CAUSE FIX #4: Navigation Configuration ==========
                 # First clear cookies and cache
                 await context.clear_cookies()
-                
-                # Disable JavaScript for initial navigation (speeds up load)
-                await page.evaluate("() => { window.localStorage.clear(); window.sessionStorage.clear(); }")
                 
                 # Navigate directly to the target page with more efficient wait condition
                 # Use domcontentloaded instead of networkidle - this is a key change
@@ -130,6 +126,19 @@ async def scrape_website():
                     wait_until="domcontentloaded"  # Much faster than networkidle
                 )
                 print("Page loaded successfully!")
+                
+                # Now that the page is loaded, try to clear storage if possible
+                try:
+                    await page.evaluate("""() => {
+                        try {
+                            if (window.localStorage) localStorage.clear();
+                            if (window.sessionStorage) sessionStorage.clear();
+                        } catch (e) {
+                            console.log('Could not clear storage, but continuing anyway');
+                        }
+                    }""")
+                except Exception as e:
+                    print(f"Non-critical error clearing storage: {str(e)}")
                 
                 # Wait briefly for JS to initialize, but don't wait for all resources
                 await page.wait_for_selector("body", timeout=5000)
