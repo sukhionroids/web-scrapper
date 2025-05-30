@@ -68,8 +68,7 @@ async def scrape_website():
                 args=browser_args
             )
             print("Launched Edge browser locally")
-            
-        # ========== ROOT CAUSE FIX #2: Enhanced Browser Context ==========
+              # ========== ROOT CAUSE FIX #2: Enhanced Browser Context ==========
         # Use a context that mimics Edge even when using Chrome
         context = await browser.new_context(
             ignore_https_errors=True,  # Handle self-signed certificates
@@ -78,8 +77,7 @@ async def scrape_website():
             viewport={"width": 1280, "height": 720},  # Smaller viewport for speed
             locale="en-US",
             timezone_id="America/New_York",
-            # Windows-specific settings
-            platform="Windows",
+            # Device settings
             device_scale_factor=1.0,
             is_mobile=False,
             has_touch=False,
