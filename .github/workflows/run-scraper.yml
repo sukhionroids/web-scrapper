@@ -29,7 +29,7 @@ jobs:
           python -m playwright install chromium
         
       - name: Run scraper
-        run: python edge_playwright_github.py
+        run: python edge_playwright_root_fix.py
         timeout-minutes: 5  # Add a timeout for this specific step
       
 
